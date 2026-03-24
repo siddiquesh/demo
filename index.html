@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAD Practicals – Kotlin & Android</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #13161e;
+    --card: #1a1e2a;
+    --border: #252a38;
+    --accent: #6ee7b7;
+    --accent2: #818cf8;
+    --accent3: #f472b6;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --keyword: #818cf8;
+    --string: #6ee7b7;
+    --fn: #f472b6;
+    --type: #fbbf24;
+    --comment: #4a5568;
+    --num: #fb923c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(110,231,183,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(110,231,183,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    margin-bottom: 70px;
+  }
+
+  .badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(110,231,183,0.3);
+    padding: 6px 16px;
+    border-radius: 2px;
+    margin-bottom: 20px;
+    animation: fadeIn 0.6s ease both;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, #e2e8f0 0%, #6ee7b7 50%, #818cf8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: fadeIn 0.6s 0.1s ease both;
+  }
+
+  .subtitle {
+    margin-top: 14px;
+    color: var(--muted);
+    font-size: 15px;
+    font-family: 'JetBrains Mono', monospace;
+    animation: fadeIn 0.6s 0.2s ease both;
+  }
+
+  /* Practical cards */
+  .practical {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 36px;
+    overflow: hidden;
+    animation: slideUp 0.6s ease both;
+    transition: border-color 0.3s;
+  }
+
+  .practical:hover {
+    border-color: rgba(110,231,183,0.25);
+  }
+
+  .practical:nth-child(1) { animation-delay: 0.1s; }
+  .practical:nth-child(2) { animation-delay: 0.2s; }
+  .practical:nth-child(3) { animation-delay: 0.3s; }
+  .practical:nth-child(4) { animation-delay: 0.4s; }
+
+  .practical-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 22px 28px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+  }
+
+  .prac-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--bg);
+    background: var(--accent);
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .practical:nth-child(2) .prac-num { background: var(--accent2); }
+  .practical:nth-child(3) .prac-num { background: var(--accent3); }
+  .practical:nth-child(4) .prac-num { background: var(--type); }
+
+  .prac-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  .prac-body {
+    padding: 24px 28px;
+  }
+
+  .aim-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .aim-text {
+    font-size: 14px;
+    color: #94a3b8;
+    line-height: 1.6;
+    margin-bottom: 22px;
+    padding-left: 12px;
+    border-left: 2px solid var(--border);
+  }
+
+  /* Code block */
+  .code-wrap {
+    background: #0a0c12;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .code-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #ffbd2e; }
+  .dot-g { background: #28c840; }
+
+  .lang-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  pre {
+    padding: 22px 20px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.75;
+    color: var(--text);
+    tab-size: 4;
+  }
+
+  /* Syntax colors */
+  .kw  { color: var(--keyword); font-weight: 600; }   /* fun, val, var, class, if, else, override */
+  .fn  { color: var(--fn); }                           /* function names */
+  .str { color: var(--string); }                       /* strings */
+  .num { color: var(--num); }                          /* numbers */
+  .typ { color: var(--type); }                         /* types: Int, String, Bundle */
+  .cmt { color: var(--comment); font-style: italic; }  /* comments */
+  .pkg { color: #38bdf8; }                             /* package / import */
+
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Copy button */
+  .copy-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .copy-btn:hover {
+    color: var(--accent);
+    border-color: rgba(110,231,183,0.4);
+    background: rgba(110,231,183,0.06);
+  }
+
+  .copy-btn.copied {
+    color: var(--accent);
+    border-color: rgba(110,231,183,0.5);
+    background: rgba(110,231,183,0.1);
+  }
+
+  .copy-btn svg {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    margin-top: 60px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <header>
+    <div class="badge">Mobile App Development</div>
+    <h1>Kotlin & Android<br>Practicals</h1>
+    <p class="subtitle">// Practicals 1, 2, 3, 5</p>
+  </header>
+
+  <!-- Practical 1 -->
+  <div class="practical">
+    <div class="practical-header">
+      <span class="prac-num">PRAC 01</span>
+      <span class="prac-title">Simple Calculator – Addition, Subtraction, Multiplication, Division</span>
+    </div>
+    <div class="prac-body">
+      <div class="aim-label">Aim</div>
+      <p class="aim-text">Write a Kotlin program that demonstrates the simple calculator with Addition, Subtraction, Multiplication and Division operations.</p>
+      <div class="code-wrap">
+        <div class="code-topbar">
+          <div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div>
+          <span class="lang-tag">Kotlin</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            COPY
+          </button>
+        </div>
+<pre><span class="kw">fun</span> <span class="fn">main</span>() {
+    <span class="fn">Add</span>(<span class="num">10</span>, <span class="num">30</span>)
+    <span class="fn">Sub</span>(<span class="num">40</span>, <span class="num">30</span>)
+    <span class="fn">Mul</span>(<span class="num">50</span>, <span class="num">10</span>)
+    <span class="fn">Div</span>(<span class="num">100</span>, <span class="num">10</span>)
+}
+
+<span class="kw">fun</span> <span class="fn">Add</span>(a: <span class="typ">Int</span>, b: <span class="typ">Int</span>) {
+    println(<span class="str">"Addition of $a and $b = ${a + b}"</span>)
+}
+
+<span class="kw">fun</span> <span class="fn">Sub</span>(a: <span class="typ">Int</span>, b: <span class="typ">Int</span>) {
+    println(<span class="str">"Subtraction of $a and $b = ${a - b}"</span>)
+}
+
+<span class="kw">fun</span> <span class="fn">Mul</span>(a: <span class="typ">Int</span>, b: <span class="typ">Int</span>) {
+    println(<span class="str">"Multiplication of $a and $b = ${a * b}"</span>)
+}
+
+<span class="kw">fun</span> <span class="fn">Div</span>(a: <span class="typ">Int</span>, b: <span class="typ">Int</span>) {
+    <span class="kw">if</span> (b != <span class="num">0</span>)
+        println(<span class="str">"Division of $a and $b = ${a / b}"</span>)
+    <span class="kw">else</span>
+        println(<span class="str">"Cannot divide by zero"</span>)
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Practical 2 -->
+  <div class="practical">
+    <div class="practical-header">
+      <span class="prac-num">PRAC 02</span>
+      <span class="prac-title">OOP Concepts – Classes, Objects, Constructors &amp; Methods</span>
+    </div>
+    <div class="prac-body">
+      <div class="aim-label">Aim</div>
+      <p class="aim-text">Write a Kotlin program demonstrating Object-Oriented Programming concepts by creating classes, objects, constructors, and methods to store and display student details.</p>
+      <div class="code-wrap">
+        <div class="code-topbar">
+          <div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div>
+          <span class="lang-tag">Kotlin</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            COPY
+          </button>
+        </div>
+<pre><span class="kw">class</span> <span class="typ">Student</span>(<span class="kw">var</span> name: <span class="typ">String</span>, <span class="kw">var</span> rollNo: <span class="typ">Int</span>, <span class="kw">var</span> marks: <span class="typ">Int</span>) {
+    <span class="kw">fun</span> <span class="fn">displayDetails</span>() {
+        println(<span class="str">"Student Name: $name"</span>)
+        println(<span class="str">"Roll Number: $rollNo"</span>)
+        println(<span class="str">"Marks: $marks"</span>)
+    }
+}
+
+<span class="kw">fun</span> <span class="fn">main</span>() {
+    <span class="kw">val</span> student1 = <span class="typ">Student</span>(<span class="str">"sandeep"</span>, <span class="num">101</span>, <span class="num">85</span>)
+    <span class="kw">val</span> student2 = <span class="typ">Student</span>(<span class="str">"rahul"</span>, <span class="num">102</span>, <span class="num">90</span>)
+
+    println(<span class="str">"Student 1 Details:"</span>)
+    student1.<span class="fn">displayDetails</span>()
+
+    println()
+
+    println(<span class="str">"Student 2 Details:"</span>)
+    student2.<span class="fn">displayDetails</span>()
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Practical 3 -->
+  <div class="practical">
+    <div class="practical-header">
+      <span class="prac-num">PRAC 03</span>
+      <span class="prac-title">Function-Based Calculator – Basic Operations</span>
+    </div>
+    <div class="prac-body">
+      <div class="aim-label">Aim</div>
+      <p class="aim-text">Write a Kotlin program that declares a function for calculator basic operations on two numbers and calls the function from the main program to display the result.</p>
+      <div class="code-wrap">
+        <div class="code-topbar">
+          <div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div>
+          <span class="lang-tag">Kotlin</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            COPY
+          </button>
+        </div>
+<pre><span class="kw">fun</span> <span class="fn">calculator</span>(a: <span class="typ">Int</span>, b: <span class="typ">Int</span>) {
+    println(<span class="str">"Addition: "</span> + (a + b))
+    println(<span class="str">"Subtraction: "</span> + (a - b))
+    println(<span class="str">"Multiplication: "</span> + (a * b))
+    println(<span class="str">"Division: "</span> + (a / b))
+}
+
+<span class="kw">fun</span> <span class="fn">main</span>() {
+    <span class="kw">val</span> num1 = <span class="num">20</span>
+    <span class="kw">val</span> num2 = <span class="num">10</span>
+    <span class="fn">calculator</span>(num1, num2)
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Practical 5 -->
+  <div class="practical">
+    <div class="practical-header">
+      <span class="prac-num">PRAC 05</span>
+      <span class="prac-title">Android Activity Lifecycle – Logging All Lifecycle Methods</span>
+    </div>
+    <div class="prac-body">
+      <div class="aim-label">Aim</div>
+      <p class="aim-text">To create an Android application that demonstrates Activity Life Cycle.</p>
+      <div class="code-wrap">
+        <div class="code-topbar">
+          <div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div>
+          <span class="lang-tag">Kotlin · Android</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            COPY
+          </button>
+        </div>
+<pre><span class="pkg">package</span> com.example.firstapp
+
+<span class="pkg">import</span> android.os.Bundle
+<span class="pkg">import</span> android.util.Log
+<span class="pkg">import</span> androidx.appcompat.app.AppCompatActivity
+
+<span class="kw">class</span> <span class="typ">MainActivity</span> : <span class="typ">AppCompatActivity</span>() {
+
+    <span class="kw">override fun</span> <span class="fn">onCreate</span>(savedInstanceState: <span class="typ">Bundle</span>?) {
+        <span class="kw">super</span>.<span class="fn">onCreate</span>(savedInstanceState)
+        <span class="fn">setContentView</span>(R.layout.activity_main)
+        Log.<span class="fn">e</span>(<span class="str">"FirstApp"</span>, <span class="str">"This is onCreate() method"</span>)
+    }
+
+    <span class="kw">override fun</span> <span class="fn">onStart</span>() {
+        <span class="kw">super</span>.<span class="fn">onStart</span>()
+        Log.<span class="fn">e</span>(<span class="str">"FirstApp"</span>, <span class="str">"This is onStart() method"</span>)
+    }
+
+    <span class="kw">override fun</span> <span class="fn">onResume</span>() {
+        <span class="kw">super</span>.<span class="fn">onResume</span>()
+        Log.<span class="fn">e</span>(<span class="str">"FirstApp"</span>, <span class="str">"This is onResume() method"</span>)
+    }
+
+    <span class="kw">override fun</span> <span class="fn">onPause</span>() {
+        <span class="kw">super</span>.<span class="fn">onPause</span>()
+        Log.<span class="fn">e</span>(<span class="str">"FirstApp"</span>, <span class="str">"This is onPause() method"</span>)
+    }
+
+    <span class="kw">override fun</span> <span class="fn">onStop</span>() {
+        <span class="kw">super</span>.<span class="fn">onStop</span>()
+        Log.<span class="fn">e</span>(<span class="str">"FirstApp"</span>, <span class="str">"This is onStop() method"</span>)
+    }
+
+    <span class="kw">override fun</span> <span class="fn">onDestroy</span>() {
+        <span class="kw">super</span>.<span class="fn">onDestroy</span>()
+        Log.<span class="fn">e</span>(<span class="str">"FirstApp"</span>, <span class="str">"This is onDestroy() method"</span>)
+    }
+
+    <span class="kw">override fun</span> <span class="fn">onRestart</span>() {
+        <span class="kw">super</span>.<span class="fn">onRestart</span>()
+        Log.<span class="fn">e</span>(<span class="str">"FirstApp"</span>, <span class="str">"This is onRestart() method"</span>)
+    }
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <footer>// end of practicals &nbsp;·&nbsp; MAD Lab</footer>
+
+</div>
+<script>
+  function copyCode(btn) {
+    const pre = btn.closest('.code-wrap').querySelector('pre');
+    const text = pre.innerText;
+
+    // Fallback using textarea
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    ta.style.top = '0';
+    ta.style.left = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+
+    try {
+      document.execCommand('copy');
+      showCopied(btn);
+    } catch (e) {
+      // Try modern API as secondary
+      navigator.clipboard && navigator.clipboard.writeText(text)
+        .then(() => showCopied(btn))
+        .catch(() => alert('Copy failed — try selecting the code manually.'));
+    }
+
+    document.body.removeChild(ta);
+  }
+
+  function showCopied(btn) {
+    btn.classList.add('copied');
+    btn.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      COPIED
+    `;
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        COPY
+      `;
+    }, 2000);
+  }
+</script>
+</body>
+</html>
