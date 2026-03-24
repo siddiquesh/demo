@@ -115,6 +115,7 @@
   .practical:nth-child(2) { animation-delay: 0.2s; }
   .practical:nth-child(3) { animation-delay: 0.3s; }
   .practical:nth-child(4) { animation-delay: 0.4s; }
+  .practical:nth-child(5) { animation-delay: 0.5s; }
 
   .practical-header {
     display: flex;
@@ -141,6 +142,7 @@
   .practical:nth-child(2) .prac-num { background: var(--accent2); }
   .practical:nth-child(3) .prac-num { background: var(--accent3); }
   .practical:nth-child(4) .prac-num { background: var(--type); }
+  .practical:nth-child(5) .prac-num { background: #38bdf8; }
 
   .prac-title {
     font-size: 15px;
@@ -414,6 +416,214 @@
     <span class="kw">val</span> num1 = <span class="num">20</span>
     <span class="kw">val</span> num2 = <span class="num">10</span>
     <span class="fn">calculator</span>(num1, num2)
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Practical 4 -->
+  <div class="practical">
+    <div class="practical-header">
+      <span class="prac-num">PRAC 04</span>
+      <span class="prac-title">Android Calculator App – XML Layout + Kotlin Logic</span>
+    </div>
+    <div class="prac-body">
+      <div class="aim-label">Aim</div>
+      <p class="aim-text">Write a Kotlin program that demonstrates the simple calculator with Addition, Subtraction, Multiplication and Division operations using XML.</p>
+
+      <!-- XML File -->
+      <div class="aim-label" style="margin-top:18px;">activity_main.xml</div>
+      <div class="code-wrap" style="margin-bottom:20px;">
+        <div class="code-topbar">
+          <div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div>
+          <span class="lang-tag">XML</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            COPY
+          </button>
+        </div>
+<pre><span class="cmt">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span>
+<span class="kw">&lt;LinearLayout</span> <span class="fn">xmlns:android</span>=<span class="str">"http://schemas.android.com/apk/res/android"</span>
+    <span class="fn">android:id</span>=<span class="str">"@+id/main"</span>
+    <span class="fn">android:layout_width</span>=<span class="str">"match_parent"</span>
+    <span class="fn">android:layout_height</span>=<span class="str">"match_parent"</span>
+    <span class="fn">android:orientation</span>=<span class="str">"vertical"</span>
+    <span class="fn">android:padding</span>=<span class="str">"24dp"</span>
+    <span class="fn">android:background</span>=<span class="str">"#F5F5F5"</span><span class="kw">&gt;</span>
+
+    <span class="kw">&lt;TextView</span>
+        <span class="fn">android:layout_width</span>=<span class="str">"match_parent"</span>
+        <span class="fn">android:layout_height</span>=<span class="str">"wrap_content"</span>
+        <span class="fn">android:text</span>=<span class="str">"YASH'S Calci"</span>
+        <span class="fn">android:textSize</span>=<span class="str">"28sp"</span>
+        <span class="fn">android:textStyle</span>=<span class="str">"bold"</span>
+        <span class="fn">android:textColor</span>=<span class="str">"#FFFFFF"</span>
+        <span class="fn">android:gravity</span>=<span class="str">"center"</span>
+        <span class="fn">android:background</span>=<span class="str">"#1565C0"</span>
+        <span class="fn">android:padding</span>=<span class="str">"20dp"</span>
+        <span class="fn">android:layout_marginBottom</span>=<span class="str">"32dp"</span><span class="kw">/&gt;</span>
+
+    <span class="kw">&lt;EditText</span>
+        <span class="fn">android:id</span>=<span class="str">"@+id/num1"</span>
+        <span class="fn">android:hint</span>=<span class="str">"Enter First Number"</span>
+        <span class="fn">android:inputType</span>=<span class="str">"number"</span>
+        <span class="fn">android:padding</span>=<span class="str">"14dp"</span>
+        <span class="fn">android:layout_width</span>=<span class="str">"match_parent"</span>
+        <span class="fn">android:layout_height</span>=<span class="str">"wrap_content"</span>
+        <span class="fn">android:layout_marginBottom</span>=<span class="str">"14dp"</span>
+        <span class="fn">android:background</span>=<span class="str">"#FFFFFF"</span>
+        <span class="fn">android:textColor</span>=<span class="str">"#212121"</span>
+        <span class="fn">android:textColorHint</span>=<span class="str">"#9E9E9E"</span><span class="kw">/&gt;</span>
+
+    <span class="kw">&lt;EditText</span>
+        <span class="fn">android:id</span>=<span class="str">"@+id/num2"</span>
+        <span class="fn">android:hint</span>=<span class="str">"Enter Second Number"</span>
+        <span class="fn">android:inputType</span>=<span class="str">"number"</span>
+        <span class="fn">android:padding</span>=<span class="str">"14dp"</span>
+        <span class="fn">android:layout_width</span>=<span class="str">"match_parent"</span>
+        <span class="fn">android:layout_height</span>=<span class="str">"wrap_content"</span>
+        <span class="fn">android:layout_marginBottom</span>=<span class="str">"28dp"</span>
+        <span class="fn">android:background</span>=<span class="str">"#FFFFFF"</span>
+        <span class="fn">android:textColor</span>=<span class="str">"#212121"</span>
+        <span class="fn">android:textColorHint</span>=<span class="str">"#9E9E9E"</span><span class="kw">/&gt;</span>
+
+    <span class="kw">&lt;LinearLayout</span>
+        <span class="fn">android:layout_width</span>=<span class="str">"match_parent"</span>
+        <span class="fn">android:layout_height</span>=<span class="str">"wrap_content"</span>
+        <span class="fn">android:orientation</span>=<span class="str">"horizontal"</span>
+        <span class="fn">android:weightSum</span>=<span class="str">"2"</span>
+        <span class="fn">android:layout_marginBottom</span>=<span class="str">"12dp"</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;Button</span>
+            <span class="fn">android:id</span>=<span class="str">"@+id/btnAdd"</span>
+            <span class="fn">android:text</span>=<span class="str">"+"</span>
+            <span class="fn">android:textSize</span>=<span class="str">"20sp"</span>
+            <span class="fn">android:layout_weight</span>=<span class="str">"1"</span>
+            <span class="fn">android:layout_width</span>=<span class="str">"0dp"</span>
+            <span class="fn">android:layout_height</span>=<span class="str">"55dp"</span>
+            <span class="fn">android:layout_marginEnd</span>=<span class="str">"6dp"</span>
+            <span class="fn">android:backgroundTint</span>=<span class="str">"#1565C0"</span>
+            <span class="fn">android:textColor</span>=<span class="str">"#FFFFFF"</span><span class="kw">/&gt;</span>
+        <span class="kw">&lt;Button</span>
+            <span class="fn">android:id</span>=<span class="str">"@+id/btnSub"</span>
+            <span class="fn">android:text</span>=<span class="str">"-"</span>
+            <span class="fn">android:textSize</span>=<span class="str">"20sp"</span>
+            <span class="fn">android:layout_weight</span>=<span class="str">"1"</span>
+            <span class="fn">android:layout_width</span>=<span class="str">"0dp"</span>
+            <span class="fn">android:layout_height</span>=<span class="str">"55dp"</span>
+            <span class="fn">android:layout_marginStart</span>=<span class="str">"6dp"</span>
+            <span class="fn">android:backgroundTint</span>=<span class="str">"#1565C0"</span>
+            <span class="fn">android:textColor</span>=<span class="str">"#FFFFFF"</span><span class="kw">/&gt;</span>
+    <span class="kw">&lt;/LinearLayout&gt;</span>
+
+    <span class="kw">&lt;LinearLayout</span>
+        <span class="fn">android:layout_width</span>=<span class="str">"match_parent"</span>
+        <span class="fn">android:layout_height</span>=<span class="str">"wrap_content"</span>
+        <span class="fn">android:orientation</span>=<span class="str">"horizontal"</span>
+        <span class="fn">android:weightSum</span>=<span class="str">"2"</span>
+        <span class="fn">android:layout_marginBottom</span>=<span class="str">"28dp"</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;Button</span>
+            <span class="fn">android:id</span>=<span class="str">"@+id/btnMul"</span>
+            <span class="fn">android:text</span>=<span class="str">"×"</span>
+            <span class="fn">android:textSize</span>=<span class="str">"20sp"</span>
+            <span class="fn">android:layout_weight</span>=<span class="str">"1"</span>
+            <span class="fn">android:layout_width</span>=<span class="str">"0dp"</span>
+            <span class="fn">android:layout_height</span>=<span class="str">"55dp"</span>
+            <span class="fn">android:layout_marginEnd</span>=<span class="str">"6dp"</span>
+            <span class="fn">android:backgroundTint</span>=<span class="str">"#1565C0"</span>
+            <span class="fn">android:textColor</span>=<span class="str">"#FFFFFF"</span><span class="kw">/&gt;</span>
+        <span class="kw">&lt;Button</span>
+            <span class="fn">android:id</span>=<span class="str">"@+id/btnDiv"</span>
+            <span class="fn">android:text</span>=<span class="str">"÷"</span>
+            <span class="fn">android:textSize</span>=<span class="str">"20sp"</span>
+            <span class="fn">android:layout_weight</span>=<span class="str">"1"</span>
+            <span class="fn">android:layout_width</span>=<span class="str">"0dp"</span>
+            <span class="fn">android:layout_height</span>=<span class="str">"55dp"</span>
+            <span class="fn">android:layout_marginStart</span>=<span class="str">"6dp"</span>
+            <span class="fn">android:backgroundTint</span>=<span class="str">"#1565C0"</span>
+            <span class="fn">android:textColor</span>=<span class="str">"#FFFFFF"</span><span class="kw">/&gt;</span>
+    <span class="kw">&lt;/LinearLayout&gt;</span>
+
+    <span class="kw">&lt;TextView</span>
+        <span class="fn">android:id</span>=<span class="str">"@+id/result"</span>
+        <span class="fn">android:text</span>=<span class="str">"Result will appear here"</span>
+        <span class="fn">android:textSize</span>=<span class="str">"20sp"</span>
+        <span class="fn">android:textStyle</span>=<span class="str">"bold"</span>
+        <span class="fn">android:textColor</span>=<span class="str">"#1565C0"</span>
+        <span class="fn">android:background</span>=<span class="str">"#FFFFFF"</span>
+        <span class="fn">android:padding</span>=<span class="str">"18dp"</span>
+        <span class="fn">android:layout_width</span>=<span class="str">"match_parent"</span>
+        <span class="fn">android:layout_height</span>=<span class="str">"wrap_content"</span>
+        <span class="fn">android:gravity</span>=<span class="str">"center"</span><span class="kw">/&gt;</span>
+
+<span class="kw">&lt;/LinearLayout&gt;</span></pre>
+      </div>
+
+      <!-- Kotlin File -->
+      <div class="aim-label">MainActivity.kt</div>
+      <div class="code-wrap">
+        <div class="code-topbar">
+          <div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div>
+          <span class="lang-tag">Kotlin · Android</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            COPY
+          </button>
+        </div>
+<pre><span class="pkg">package</span> com.cys.myapplication
+
+<span class="pkg">import</span> android.os.Bundle
+<span class="pkg">import</span> androidx.activity.enableEdgeToEdge
+<span class="pkg">import</span> androidx.appcompat.app.AppCompatActivity
+<span class="pkg">import</span> androidx.core.view.ViewCompat
+<span class="pkg">import</span> androidx.core.view.WindowInsetsCompat
+<span class="pkg">import</span> android.widget.*
+
+<span class="kw">class</span> <span class="typ">MainActivity</span> : <span class="typ">AppCompatActivity</span>() {
+
+    <span class="kw">override fun</span> <span class="fn">onCreate</span>(savedInstanceState: <span class="typ">Bundle</span>?) {
+        <span class="kw">super</span>.<span class="fn">onCreate</span>(savedInstanceState)
+        <span class="fn">enableEdgeToEdge</span>()
+        <span class="fn">setContentView</span>(R.layout.activity_main)
+
+        ViewCompat.<span class="fn">setOnApplyWindowInsetsListener</span>(<span class="fn">findViewById</span>(R.id.main)) { v, insets ->
+            <span class="kw">val</span> systemBars = insets.<span class="fn">getInsets</span>(WindowInsetsCompat.Type.<span class="fn">systemBars</span>())
+            v.<span class="fn">setPadding</span>(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
+        <span class="kw">val</span> num1 = <span class="fn">findViewById</span>&lt;<span class="typ">EditText</span>&gt;(R.id.num1)
+        <span class="kw">val</span> num2 = <span class="fn">findViewById</span>&lt;<span class="typ">EditText</span>&gt;(R.id.num2)
+        <span class="kw">val</span> result = <span class="fn">findViewById</span>&lt;<span class="typ">TextView</span>&gt;(R.id.result)
+        <span class="kw">val</span> add = <span class="fn">findViewById</span>&lt;<span class="typ">Button</span>&gt;(R.id.btnAdd)
+        <span class="kw">val</span> sub = <span class="fn">findViewById</span>&lt;<span class="typ">Button</span>&gt;(R.id.btnSub)
+        <span class="kw">val</span> mul = <span class="fn">findViewById</span>&lt;<span class="typ">Button</span>&gt;(R.id.btnMul)
+        <span class="kw">val</span> div = <span class="fn">findViewById</span>&lt;<span class="typ">Button</span>&gt;(R.id.btnDiv)
+
+        add.<span class="fn">setOnClickListener</span> {
+            <span class="kw">val</span> a = num1.text.toString().<span class="fn">toInt</span>()
+            <span class="kw">val</span> b = num2.text.toString().<span class="fn">toInt</span>()
+            result.text = <span class="str">"Result: ${a + b}"</span>
+        }
+
+        sub.<span class="fn">setOnClickListener</span> {
+            <span class="kw">val</span> a = num1.text.toString().<span class="fn">toInt</span>()
+            <span class="kw">val</span> b = num2.text.toString().<span class="fn">toInt</span>()
+            result.text = <span class="str">"Result: ${a - b}"</span>
+        }
+
+        mul.<span class="fn">setOnClickListener</span> {
+            <span class="kw">val</span> a = num1.text.toString().<span class="fn">toInt</span>()
+            <span class="kw">val</span> b = num2.text.toString().<span class="fn">toInt</span>()
+            result.text = <span class="str">"Result: ${a * b}"</span>
+        }
+
+        div.<span class="fn">setOnClickListener</span> {
+            <span class="kw">val</span> a = num1.text.toString().<span class="fn">toInt</span>()
+            <span class="kw">val</span> b = num2.text.toString().<span class="fn">toInt</span>()
+            <span class="kw">if</span> (b != <span class="num">0</span>) result.text = <span class="str">"Result: ${a / b}"</span>
+            <span class="kw">else</span> result.text = <span class="str">"Error: Cannot divide by zero"</span>
+        }
+    }
 }</pre>
       </div>
     </div>
