@@ -3,25 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MAD Practicals – Kotlin & Android</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<title>Python Practicals</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0d0f14;
-    --surface: #13161e;
+    --surface: #151820;
     --card: #1a1e2a;
-    --border: #252a38;
-    --accent: #6ee7b7;
-    --accent2: #818cf8;
-    --accent3: #f472b6;
-    --text: #e2e8f0;
-    --muted: #64748b;
-    --keyword: #818cf8;
-    --string: #6ee7b7;
-    --fn: #f472b6;
-    --type: #fbbf24;
-    --comment: #4a5568;
-    --num: #fb923c;
+    --border: #252b3b;
+    --accent: #5b8dee;
+    --accent2: #e05bf0;
+    --green: #3ddc84;
+    --yellow: #f5c542;
+    --text: #d4daf7;
+    --muted: #6b7494;
+    --code-bg: #10131c;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -31,715 +27,370 @@
     color: var(--text);
     font-family: 'Syne', sans-serif;
     min-height: 100vh;
-    overflow-x: hidden;
+    padding: 2rem 1rem 4rem;
   }
 
-  /* Background grid */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(110,231,183,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(110,231,183,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .wrapper {
-    position: relative;
-    z-index: 1;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 60px 24px 80px;
-  }
-
-  /* Header */
   header {
+    max-width: 860px;
+    margin: 0 auto 3rem;
     text-align: center;
-    margin-bottom: 70px;
+    padding-top: 2rem;
   }
 
-  .badge {
+  header .tag {
     display: inline-block;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
+    font-size: 0.72rem;
     color: var(--accent);
-    border: 1px solid rgba(110,231,183,0.3);
-    padding: 6px 16px;
-    border-radius: 2px;
-    margin-bottom: 20px;
-    animation: fadeIn 0.6s ease both;
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    padding: 0.25rem 0.85rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 1.2rem;
+    text-transform: uppercase;
   }
 
-  h1 {
-    font-size: clamp(2rem, 5vw, 3.5rem);
+  header h1 {
+    font-size: clamp(2rem, 6vw, 3.2rem);
     font-weight: 800;
+    letter-spacing: -0.02em;
     line-height: 1.1;
-    letter-spacing: -1px;
-    background: linear-gradient(135deg, #e2e8f0 0%, #6ee7b7 50%, #818cf8 100%);
+    background: linear-gradient(135deg, #fff 30%, var(--accent) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: fadeIn 0.6s 0.1s ease both;
   }
 
-  .subtitle {
-    margin-top: 14px;
+  header p {
+    margin-top: 0.9rem;
     color: var(--muted);
-    font-size: 15px;
+    font-size: 1rem;
     font-family: 'JetBrains Mono', monospace;
-    animation: fadeIn 0.6s 0.2s ease both;
   }
 
-  /* Practical cards */
-  .practical {
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2.2rem;
+  }
+
+  .card {
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    margin-bottom: 36px;
+    border-radius: 16px;
     overflow: hidden;
-    animation: slideUp 0.6s ease both;
-    transition: border-color 0.3s;
+    animation: fadeUp 0.5s ease both;
   }
 
-  .practical:hover {
-    border-color: rgba(110,231,183,0.25);
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.12s; }
+  .card:nth-child(3) { animation-delay: 0.19s; }
+  .card:nth-child(4) { animation-delay: 0.26s; }
+  .card:nth-child(5) { animation-delay: 0.33s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 
-  .practical:nth-child(1) { animation-delay: 0.1s; }
-  .practical:nth-child(2) { animation-delay: 0.2s; }
-  .practical:nth-child(3) { animation-delay: 0.3s; }
-  .practical:nth-child(4) { animation-delay: 0.4s; }
-  .practical:nth-child(5) { animation-delay: 0.5s; }
-
-  .practical-header {
+  .card-header {
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 22px 28px;
+    gap: 1rem;
+    padding: 1.2rem 1.6rem;
     border-bottom: 1px solid var(--border);
-    background: rgba(255,255,255,0.02);
+    background: var(--surface);
   }
 
-  .prac-num {
+  .pnum {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    font-size: 0.7rem;
     font-weight: 700;
     color: var(--bg);
     background: var(--accent);
-    padding: 4px 10px;
-    border-radius: 4px;
-    letter-spacing: 1px;
-    white-space: nowrap;
+    border-radius: 6px;
+    padding: 0.2rem 0.55rem;
+    letter-spacing: 0.05em;
     flex-shrink: 0;
   }
 
-  .practical:nth-child(2) .prac-num { background: var(--accent2); }
-  .practical:nth-child(3) .prac-num { background: var(--accent3); }
-  .practical:nth-child(4) .prac-num { background: var(--type); }
-  .practical:nth-child(5) .prac-num { background: #38bdf8; }
+  .pnum.p4  { background: var(--accent2); }
+  .pnum.p6  { background: var(--green); color: #0d0f14; }
+  .pnum.p9  { background: var(--yellow); color: #0d0f14; }
+  .pnum.p10 { background: #f0885b; }
 
-  .prac-title {
-    font-size: 15px;
-    font-weight: 600;
+  .card-header h2 {
+    font-size: 1rem;
+    font-weight: 700;
     color: var(--text);
-    line-height: 1.4;
+    line-height: 1.3;
   }
 
-  .prac-body {
-    padding: 24px 28px;
-  }
-
-  .aim-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
+  .objective {
+    padding: 1rem 1.6rem;
+    font-size: 0.88rem;
     color: var(--muted);
-    margin-bottom: 8px;
-  }
-
-  .aim-text {
-    font-size: 14px;
-    color: #94a3b8;
-    line-height: 1.6;
-    margin-bottom: 22px;
-    padding-left: 12px;
-    border-left: 2px solid var(--border);
-  }
-
-  /* Code block */
-  .code-wrap {
-    background: #0a0c12;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-
-  .code-topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 16px;
-    background: rgba(255,255,255,0.03);
     border-bottom: 1px solid var(--border);
+    line-height: 1.6;
   }
 
-  .dots {
-    display: flex;
-    gap: 6px;
+  .objective strong { color: var(--text); font-weight: 700; }
+
+  .code-block {
+    position: relative;
+    background: var(--code-bg);
+    padding: 1.4rem 1.6rem;
   }
 
-  .dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-  }
-
-  .dot-r { background: #ff5f57; }
-  .dot-y { background: #ffbd2e; }
-  .dot-g { background: #28c840; }
-
-  .lang-tag {
+  .copy-btn {
+    position: absolute;
+    top: 0.8rem;
+    right: 1rem;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
+    font-size: 0.68rem;
     color: var(--muted);
-    letter-spacing: 1px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.25rem 0.65rem;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
   }
+  .copy-btn:hover { color: var(--accent); border-color: var(--accent); }
 
   pre {
-    padding: 22px 20px;
-    overflow-x: auto;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
+    font-size: 0.8rem;
     line-height: 1.75;
-    color: var(--text);
-    tab-size: 4;
+    color: #c5cfee;
+    white-space: pre;
+    overflow-x: auto;
   }
 
-  /* Syntax colors */
-  .kw  { color: var(--keyword); font-weight: 600; }   /* fun, val, var, class, if, else, override */
-  .fn  { color: var(--fn); }                           /* function names */
-  .str { color: var(--string); }                       /* strings */
-  .num { color: var(--num); }                          /* numbers */
-  .typ { color: var(--type); }                         /* types: Int, String, Bundle */
-  .cmt { color: var(--comment); font-style: italic; }  /* comments */
-  .pkg { color: #38bdf8; }                             /* package / import */
-
-  /* Animations */
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-8px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* Copy button */
-  .copy-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    color: var(--muted);
-    background: transparent;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 4px 10px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .copy-btn:hover {
-    color: var(--accent);
-    border-color: rgba(110,231,183,0.4);
-    background: rgba(110,231,183,0.06);
-  }
-
-  .copy-btn.copied {
-    color: var(--accent);
-    border-color: rgba(110,231,183,0.5);
-    background: rgba(110,231,183,0.1);
-  }
-
-  .copy-btn svg {
-    width: 12px;
-    height: 12px;
-    flex-shrink: 0;
-  }
-
-  /* Footer */
-  footer {
-    text-align: center;
-    margin-top: 60px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--muted);
-    letter-spacing: 1px;
-  }
+  /* Syntax highlight classes */
+  .kw  { color: #e05bf0; }
+  .kw2 { color: #5b8dee; }
+  .fn  { color: #3ddc84; }
+  .str { color: #f5c542; }
+  .cm  { color: #4a5270; font-style: italic; }
+  .num { color: #f0885b; }
+  .lib { color: #5b8dee; }
 </style>
 </head>
 <body>
-<div class="wrapper">
 
-  <header>
-    <div class="badge">Mobile App Development</div>
-    <h1>Kotlin & Android<br>Practicals</h1>
-    <p class="subtitle">// Practicals 1, 2, 3, 5</p>
-  </header>
+<header>
+  <div class="tag">Python Lab Work</div>
+  <h1>NumPy &amp; Pandas<br>Practicals</h1>
+  <p>// data analysis &amp; matrix operations</p>
+</header>
 
-  <!-- Practical 1 -->
-  <div class="practical">
-    <div class="practical-header">
-      <span class="prac-num">PRAC 01</span>
-      <span class="prac-title">Simple Calculator – Addition, Subtraction, Multiplication, Division</span>
-    </div>
-    <div class="prac-body">
-      <div class="aim-label">Aim</div>
-      <p class="aim-text">Write a Kotlin program that demonstrates the simple calculator with Addition, Subtraction, Multiplication and Division operations.</p>
-      <div class="code-wrap">
-        <div class="code-topbar">
-          <div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div>
-          <span class="lang-tag">Kotlin</span>
-          <button class="copy-btn" onclick="copyCode(this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            COPY
-          </button>
-        </div>
-<pre><span class="kw">fun</span> <span class="fn">main</span>() {
-    <span class="fn">Add</span>(<span class="num">10</span>, <span class="num">30</span>)
-    <span class="fn">Sub</span>(<span class="num">40</span>, <span class="num">30</span>)
-    <span class="fn">Mul</span>(<span class="num">50</span>, <span class="num">10</span>)
-    <span class="fn">Div</span>(<span class="num">100</span>, <span class="num">10</span>)
-}
-
-<span class="kw">fun</span> <span class="fn">Add</span>(a: <span class="typ">Int</span>, b: <span class="typ">Int</span>) {
-    println(<span class="str">"Addition of $a and $b = ${a + b}"</span>)
-}
-
-<span class="kw">fun</span> <span class="fn">Sub</span>(a: <span class="typ">Int</span>, b: <span class="typ">Int</span>) {
-    println(<span class="str">"Subtraction of $a and $b = ${a - b}"</span>)
-}
-
-<span class="kw">fun</span> <span class="fn">Mul</span>(a: <span class="typ">Int</span>, b: <span class="typ">Int</span>) {
-    println(<span class="str">"Multiplication of $a and $b = ${a * b}"</span>)
-}
-
-<span class="kw">fun</span> <span class="fn">Div</span>(a: <span class="typ">Int</span>, b: <span class="typ">Int</span>) {
-    <span class="kw">if</span> (b != <span class="num">0</span>)
-        println(<span class="str">"Division of $a and $b = ${a / b}"</span>)
-    <span class="kw">else</span>
-        println(<span class="str">"Cannot divide by zero"</span>)
-}</pre>
-      </div>
-    </div>
-  </div>
-
-  <!-- Practical 2 -->
-  <div class="practical">
-    <div class="practical-header">
-      <span class="prac-num">PRAC 02</span>
-      <span class="prac-title">OOP Concepts – Classes, Objects, Constructors &amp; Methods</span>
-    </div>
-    <div class="prac-body">
-      <div class="aim-label">Aim</div>
-      <p class="aim-text">Write a Kotlin program demonstrating Object-Oriented Programming concepts by creating classes, objects, constructors, and methods to store and display student details.</p>
-      <div class="code-wrap">
-        <div class="code-topbar">
-          <div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div>
-          <span class="lang-tag">Kotlin</span>
-          <button class="copy-btn" onclick="copyCode(this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            COPY
-          </button>
-        </div>
-<pre><span class="kw">class</span> <span class="typ">Student</span>(<span class="kw">var</span> name: <span class="typ">String</span>, <span class="kw">var</span> rollNo: <span class="typ">Int</span>, <span class="kw">var</span> marks: <span class="typ">Int</span>) {
-    <span class="kw">fun</span> <span class="fn">displayDetails</span>() {
-        println(<span class="str">"Student Name: $name"</span>)
-        println(<span class="str">"Roll Number: $rollNo"</span>)
-        println(<span class="str">"Marks: $marks"</span>)
-    }
-}
-
-<span class="kw">fun</span> <span class="fn">main</span>() {
-    <span class="kw">val</span> student1 = <span class="typ">Student</span>(<span class="str">"sandeep"</span>, <span class="num">101</span>, <span class="num">85</span>)
-    <span class="kw">val</span> student2 = <span class="typ">Student</span>(<span class="str">"rahul"</span>, <span class="num">102</span>, <span class="num">90</span>)
-
-    println(<span class="str">"Student 1 Details:"</span>)
-    student1.<span class="fn">displayDetails</span>()
-
-    println()
-
-    println(<span class="str">"Student 2 Details:"</span>)
-    student2.<span class="fn">displayDetails</span>()
-}</pre>
-      </div>
-    </div>
-  </div>
+<div class="container">
 
   <!-- Practical 3 -->
-  <div class="practical">
-    <div class="practical-header">
-      <span class="prac-num">PRAC 03</span>
-      <span class="prac-title">Function-Based Calculator – Basic Operations</span>
+  <div class="card">
+    <div class="card-header">
+      <span class="pnum">P-03</span>
+      <h2>Statistical Analysis with NumPy</h2>
     </div>
-    <div class="prac-body">
-      <div class="aim-label">Aim</div>
-      <p class="aim-text">Write a Kotlin program that declares a function for calculator basic operations on two numbers and calls the function from the main program to display the result.</p>
-      <div class="code-wrap">
-        <div class="code-topbar">
-          <div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div>
-          <span class="lang-tag">Kotlin</span>
-          <button class="copy-btn" onclick="copyCode(this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            COPY
-          </button>
-        </div>
-<pre><span class="kw">fun</span> <span class="fn">calculator</span>(a: <span class="typ">Int</span>, b: <span class="typ">Int</span>) {
-    println(<span class="str">"Addition: "</span> + (a + b))
-    println(<span class="str">"Subtraction: "</span> + (a - b))
-    println(<span class="str">"Multiplication: "</span> + (a * b))
-    println(<span class="str">"Division: "</span> + (a / b))
-}
+    <div class="objective">
+      <strong>Objective:</strong> Utilize the NumPy library for generating a large dataset of random numbers and performing fundamental statistical analysis — mean, median, variance, standard deviation, minimum, and maximum values.
+    </div>
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyCode(this)">copy</button>
+      <pre><span class="kw">import</span> <span class="lib">numpy</span> <span class="kw">as</span> <span class="lib">np</span>
 
-<span class="kw">fun</span> <span class="fn">main</span>() {
-    <span class="kw">val</span> num1 = <span class="num">20</span>
-    <span class="kw">val</span> num2 = <span class="num">10</span>
-    <span class="fn">calculator</span>(num1, num2)
-}</pre>
-      </div>
+random_1 <span class="kw2">=</span> np.<span class="fn">random.random</span>(<span class="num">1000</span>)
+<span class="fn">print</span>(random_1)
+
+mean <span class="kw2">=</span> np.<span class="fn">mean</span>(random_1)
+<span class="fn">print</span>(mean)
+
+median <span class="kw2">=</span> np.<span class="fn">median</span>(random_1)
+<span class="fn">print</span>(median)
+
+var <span class="kw2">=</span> np.<span class="fn">var</span>(random_1)
+<span class="fn">print</span>(var)
+
+min <span class="kw2">=</span> np.<span class="fn">min</span>(random_1)
+<span class="fn">print</span>(min)
+
+std <span class="kw2">=</span> np.<span class="fn">std</span>(random_1)
+<span class="fn">print</span>(std)</pre>
     </div>
   </div>
 
   <!-- Practical 4 -->
-  <div class="practical">
-    <div class="practical-header">
-      <span class="prac-num">PRAC 04</span>
-      <span class="prac-title">Android Calculator App – XML Layout + Kotlin Logic</span>
+  <div class="card">
+    <div class="card-header">
+      <span class="pnum p4">P-04</span>
+      <h2>Data Aggregation and Grouping using Pandas</h2>
     </div>
-    <div class="prac-body">
-      <div class="aim-label">Aim</div>
-      <p class="aim-text">Write a Kotlin program that demonstrates the simple calculator with Addition, Subtraction, Multiplication and Division operations using XML.</p>
+    <div class="objective">
+      <strong>Objective:</strong> Organize data based on specific categories and apply multiple statistical functions to analyze sales and unit distributions using Pandas.
+    </div>
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyCode(this)">copy</button>
+      <pre><span class="kw">import</span> <span class="lib">pandas</span> <span class="kw">as</span> <span class="lib">pd</span>
 
-      <!-- XML File -->
-      <div class="aim-label" style="margin-top:18px;">activity_main.xml</div>
-      <div class="code-wrap" style="margin-bottom:20px;">
-        <div class="code-topbar">
-          <div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div>
-          <span class="lang-tag">XML</span>
-          <button class="copy-btn" onclick="copyCode(this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            COPY
-          </button>
-        </div>
-<pre><span class="cmt">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span>
-<span class="kw">&lt;LinearLayout</span> <span class="fn">xmlns:android</span>=<span class="str">"http://schemas.android.com/apk/res/android"</span>
-    <span class="fn">android:id</span>=<span class="str">"@+id/main"</span>
-    <span class="fn">android:layout_width</span>=<span class="str">"match_parent"</span>
-    <span class="fn">android:layout_height</span>=<span class="str">"match_parent"</span>
-    <span class="fn">android:orientation</span>=<span class="str">"vertical"</span>
-    <span class="fn">android:padding</span>=<span class="str">"24dp"</span>
-    <span class="fn">android:background</span>=<span class="str">"#F5F5F5"</span><span class="kw">&gt;</span>
+data <span class="kw2">=</span> pd.<span class="fn">DataFrame</span>({
+    <span class="str">'city'</span>:    [<span class="str">'mumbai'</span>, <span class="str">'pune'</span>, <span class="str">'panjab'</span>, <span class="str">'kolapu'</span>],
+    <span class="str">'product'</span>: [<span class="str">'mmilk'</span>, <span class="str">'apple'</span>, <span class="str">'orange'</span>, <span class="str">'baanana'</span>],
+    <span class="str">'sales'</span>:   [<span class="num">234</span>, <span class="num">543</span>, <span class="num">565</span>, <span class="num">765</span>],
+    <span class="str">'units'</span>:   [<span class="num">200</span>, <span class="num">400</span>, <span class="num">600</span>, <span class="num">560</span>]
+})
+<span class="fn">print</span>(data)
 
-    <span class="kw">&lt;TextView</span>
-        <span class="fn">android:layout_width</span>=<span class="str">"match_parent"</span>
-        <span class="fn">android:layout_height</span>=<span class="str">"wrap_content"</span>
-        <span class="fn">android:text</span>=<span class="str">"YASH'S Calci"</span>
-        <span class="fn">android:textSize</span>=<span class="str">"28sp"</span>
-        <span class="fn">android:textStyle</span>=<span class="str">"bold"</span>
-        <span class="fn">android:textColor</span>=<span class="str">"#FFFFFF"</span>
-        <span class="fn">android:gravity</span>=<span class="str">"center"</span>
-        <span class="fn">android:background</span>=<span class="str">"#1565C0"</span>
-        <span class="fn">android:padding</span>=<span class="str">"20dp"</span>
-        <span class="fn">android:layout_marginBottom</span>=<span class="str">"32dp"</span><span class="kw">/&gt;</span>
+f_n <span class="kw2">=</span> [<span class="str">'count'</span>, <span class="str">'mean'</span>, <span class="str">'sum'</span>, <span class="str">'std'</span>]
 
-    <span class="kw">&lt;EditText</span>
-        <span class="fn">android:id</span>=<span class="str">"@+id/num1"</span>
-        <span class="fn">android:hint</span>=<span class="str">"Enter First Number"</span>
-        <span class="fn">android:inputType</span>=<span class="str">"number"</span>
-        <span class="fn">android:padding</span>=<span class="str">"14dp"</span>
-        <span class="fn">android:layout_width</span>=<span class="str">"match_parent"</span>
-        <span class="fn">android:layout_height</span>=<span class="str">"wrap_content"</span>
-        <span class="fn">android:layout_marginBottom</span>=<span class="str">"14dp"</span>
-        <span class="fn">android:background</span>=<span class="str">"#FFFFFF"</span>
-        <span class="fn">android:textColor</span>=<span class="str">"#212121"</span>
-        <span class="fn">android:textColorHint</span>=<span class="str">"#9E9E9E"</span><span class="kw">/&gt;</span>
-
-    <span class="kw">&lt;EditText</span>
-        <span class="fn">android:id</span>=<span class="str">"@+id/num2"</span>
-        <span class="fn">android:hint</span>=<span class="str">"Enter Second Number"</span>
-        <span class="fn">android:inputType</span>=<span class="str">"number"</span>
-        <span class="fn">android:padding</span>=<span class="str">"14dp"</span>
-        <span class="fn">android:layout_width</span>=<span class="str">"match_parent"</span>
-        <span class="fn">android:layout_height</span>=<span class="str">"wrap_content"</span>
-        <span class="fn">android:layout_marginBottom</span>=<span class="str">"28dp"</span>
-        <span class="fn">android:background</span>=<span class="str">"#FFFFFF"</span>
-        <span class="fn">android:textColor</span>=<span class="str">"#212121"</span>
-        <span class="fn">android:textColorHint</span>=<span class="str">"#9E9E9E"</span><span class="kw">/&gt;</span>
-
-    <span class="kw">&lt;LinearLayout</span>
-        <span class="fn">android:layout_width</span>=<span class="str">"match_parent"</span>
-        <span class="fn">android:layout_height</span>=<span class="str">"wrap_content"</span>
-        <span class="fn">android:orientation</span>=<span class="str">"horizontal"</span>
-        <span class="fn">android:weightSum</span>=<span class="str">"2"</span>
-        <span class="fn">android:layout_marginBottom</span>=<span class="str">"12dp"</span><span class="kw">&gt;</span>
-        <span class="kw">&lt;Button</span>
-            <span class="fn">android:id</span>=<span class="str">"@+id/btnAdd"</span>
-            <span class="fn">android:text</span>=<span class="str">"+"</span>
-            <span class="fn">android:textSize</span>=<span class="str">"20sp"</span>
-            <span class="fn">android:layout_weight</span>=<span class="str">"1"</span>
-            <span class="fn">android:layout_width</span>=<span class="str">"0dp"</span>
-            <span class="fn">android:layout_height</span>=<span class="str">"55dp"</span>
-            <span class="fn">android:layout_marginEnd</span>=<span class="str">"6dp"</span>
-            <span class="fn">android:backgroundTint</span>=<span class="str">"#1565C0"</span>
-            <span class="fn">android:textColor</span>=<span class="str">"#FFFFFF"</span><span class="kw">/&gt;</span>
-        <span class="kw">&lt;Button</span>
-            <span class="fn">android:id</span>=<span class="str">"@+id/btnSub"</span>
-            <span class="fn">android:text</span>=<span class="str">"-"</span>
-            <span class="fn">android:textSize</span>=<span class="str">"20sp"</span>
-            <span class="fn">android:layout_weight</span>=<span class="str">"1"</span>
-            <span class="fn">android:layout_width</span>=<span class="str">"0dp"</span>
-            <span class="fn">android:layout_height</span>=<span class="str">"55dp"</span>
-            <span class="fn">android:layout_marginStart</span>=<span class="str">"6dp"</span>
-            <span class="fn">android:backgroundTint</span>=<span class="str">"#1565C0"</span>
-            <span class="fn">android:textColor</span>=<span class="str">"#FFFFFF"</span><span class="kw">/&gt;</span>
-    <span class="kw">&lt;/LinearLayout&gt;</span>
-
-    <span class="kw">&lt;LinearLayout</span>
-        <span class="fn">android:layout_width</span>=<span class="str">"match_parent"</span>
-        <span class="fn">android:layout_height</span>=<span class="str">"wrap_content"</span>
-        <span class="fn">android:orientation</span>=<span class="str">"horizontal"</span>
-        <span class="fn">android:weightSum</span>=<span class="str">"2"</span>
-        <span class="fn">android:layout_marginBottom</span>=<span class="str">"28dp"</span><span class="kw">&gt;</span>
-        <span class="kw">&lt;Button</span>
-            <span class="fn">android:id</span>=<span class="str">"@+id/btnMul"</span>
-            <span class="fn">android:text</span>=<span class="str">"×"</span>
-            <span class="fn">android:textSize</span>=<span class="str">"20sp"</span>
-            <span class="fn">android:layout_weight</span>=<span class="str">"1"</span>
-            <span class="fn">android:layout_width</span>=<span class="str">"0dp"</span>
-            <span class="fn">android:layout_height</span>=<span class="str">"55dp"</span>
-            <span class="fn">android:layout_marginEnd</span>=<span class="str">"6dp"</span>
-            <span class="fn">android:backgroundTint</span>=<span class="str">"#1565C0"</span>
-            <span class="fn">android:textColor</span>=<span class="str">"#FFFFFF"</span><span class="kw">/&gt;</span>
-        <span class="kw">&lt;Button</span>
-            <span class="fn">android:id</span>=<span class="str">"@+id/btnDiv"</span>
-            <span class="fn">android:text</span>=<span class="str">"÷"</span>
-            <span class="fn">android:textSize</span>=<span class="str">"20sp"</span>
-            <span class="fn">android:layout_weight</span>=<span class="str">"1"</span>
-            <span class="fn">android:layout_width</span>=<span class="str">"0dp"</span>
-            <span class="fn">android:layout_height</span>=<span class="str">"55dp"</span>
-            <span class="fn">android:layout_marginStart</span>=<span class="str">"6dp"</span>
-            <span class="fn">android:backgroundTint</span>=<span class="str">"#1565C0"</span>
-            <span class="fn">android:textColor</span>=<span class="str">"#FFFFFF"</span><span class="kw">/&gt;</span>
-    <span class="kw">&lt;/LinearLayout&gt;</span>
-
-    <span class="kw">&lt;TextView</span>
-        <span class="fn">android:id</span>=<span class="str">"@+id/result"</span>
-        <span class="fn">android:text</span>=<span class="str">"Result will appear here"</span>
-        <span class="fn">android:textSize</span>=<span class="str">"20sp"</span>
-        <span class="fn">android:textStyle</span>=<span class="str">"bold"</span>
-        <span class="fn">android:textColor</span>=<span class="str">"#1565C0"</span>
-        <span class="fn">android:background</span>=<span class="str">"#FFFFFF"</span>
-        <span class="fn">android:padding</span>=<span class="str">"18dp"</span>
-        <span class="fn">android:layout_width</span>=<span class="str">"match_parent"</span>
-        <span class="fn">android:layout_height</span>=<span class="str">"wrap_content"</span>
-        <span class="fn">android:gravity</span>=<span class="str">"center"</span><span class="kw">/&gt;</span>
-
-<span class="kw">&lt;/LinearLayout&gt;</span></pre>
-      </div>
-
-      <!-- Kotlin File -->
-      <div class="aim-label">MainActivity.kt</div>
-      <div class="code-wrap">
-        <div class="code-topbar">
-          <div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div>
-          <span class="lang-tag">Kotlin · Android</span>
-          <button class="copy-btn" onclick="copyCode(this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            COPY
-          </button>
-        </div>
-<pre><span class="pkg">package</span> com.cys.myapplication
-
-<span class="pkg">import</span> android.os.Bundle
-<span class="pkg">import</span> androidx.activity.enableEdgeToEdge
-<span class="pkg">import</span> androidx.appcompat.app.AppCompatActivity
-<span class="pkg">import</span> androidx.core.view.ViewCompat
-<span class="pkg">import</span> androidx.core.view.WindowInsetsCompat
-<span class="pkg">import</span> android.widget.*
-
-<span class="kw">class</span> <span class="typ">MainActivity</span> : <span class="typ">AppCompatActivity</span>() {
-
-    <span class="kw">override fun</span> <span class="fn">onCreate</span>(savedInstanceState: <span class="typ">Bundle</span>?) {
-        <span class="kw">super</span>.<span class="fn">onCreate</span>(savedInstanceState)
-        <span class="fn">enableEdgeToEdge</span>()
-        <span class="fn">setContentView</span>(R.layout.activity_main)
-
-        ViewCompat.<span class="fn">setOnApplyWindowInsetsListener</span>(<span class="fn">findViewById</span>(R.id.main)) { v, insets ->
-            <span class="kw">val</span> systemBars = insets.<span class="fn">getInsets</span>(WindowInsetsCompat.Type.<span class="fn">systemBars</span>())
-            v.<span class="fn">setPadding</span>(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-
-        <span class="kw">val</span> num1 = <span class="fn">findViewById</span>&lt;<span class="typ">EditText</span>&gt;(R.id.num1)
-        <span class="kw">val</span> num2 = <span class="fn">findViewById</span>&lt;<span class="typ">EditText</span>&gt;(R.id.num2)
-        <span class="kw">val</span> result = <span class="fn">findViewById</span>&lt;<span class="typ">TextView</span>&gt;(R.id.result)
-        <span class="kw">val</span> add = <span class="fn">findViewById</span>&lt;<span class="typ">Button</span>&gt;(R.id.btnAdd)
-        <span class="kw">val</span> sub = <span class="fn">findViewById</span>&lt;<span class="typ">Button</span>&gt;(R.id.btnSub)
-        <span class="kw">val</span> mul = <span class="fn">findViewById</span>&lt;<span class="typ">Button</span>&gt;(R.id.btnMul)
-        <span class="kw">val</span> div = <span class="fn">findViewById</span>&lt;<span class="typ">Button</span>&gt;(R.id.btnDiv)
-
-        add.<span class="fn">setOnClickListener</span> {
-            <span class="kw">val</span> a = num1.text.toString().<span class="fn">toInt</span>()
-            <span class="kw">val</span> b = num2.text.toString().<span class="fn">toInt</span>()
-            result.text = <span class="str">"Result: ${a + b}"</span>
-        }
-
-        sub.<span class="fn">setOnClickListener</span> {
-            <span class="kw">val</span> a = num1.text.toString().<span class="fn">toInt</span>()
-            <span class="kw">val</span> b = num2.text.toString().<span class="fn">toInt</span>()
-            result.text = <span class="str">"Result: ${a - b}"</span>
-        }
-
-        mul.<span class="fn">setOnClickListener</span> {
-            <span class="kw">val</span> a = num1.text.toString().<span class="fn">toInt</span>()
-            <span class="kw">val</span> b = num2.text.toString().<span class="fn">toInt</span>()
-            result.text = <span class="str">"Result: ${a * b}"</span>
-        }
-
-        div.<span class="fn">setOnClickListener</span> {
-            <span class="kw">val</span> a = num1.text.toString().<span class="fn">toInt</span>()
-            <span class="kw">val</span> b = num2.text.toString().<span class="fn">toInt</span>()
-            <span class="kw">if</span> (b != <span class="num">0</span>) result.text = <span class="str">"Result: ${a / b}"</span>
-            <span class="kw">else</span> result.text = <span class="str">"Error: Cannot divide by zero"</span>
-        }
-    }
-}</pre>
-      </div>
+f_linst <span class="kw2">=</span> data.<span class="fn">groupby</span>([<span class="str">'city'</span>, <span class="str">'product'</span>]).<span class="fn">aggregate</span>({
+    <span class="str">"sales"</span>: f_n,
+    <span class="str">"units"</span>: f_n
+})
+<span class="fn">print</span>(f_linst)</pre>
     </div>
   </div>
 
-  <!-- Practical 5 -->
-  <div class="practical">
-    <div class="practical-header">
-      <span class="prac-num">PRAC 05</span>
-      <span class="prac-title">Android Activity Lifecycle – Logging All Lifecycle Methods</span>
+  <!-- Practical 6 -->
+  <div class="card">
+    <div class="card-header">
+      <span class="pnum p6">P-06</span>
+      <h2>Matrix Operations and Linear Algebra using NumPy</h2>
     </div>
-    <div class="prac-body">
-      <div class="aim-label">Aim</div>
-      <p class="aim-text">To create an Android application that demonstrates Activity Life Cycle.</p>
-      <div class="code-wrap">
-        <div class="code-topbar">
-          <div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div>
-          <span class="lang-tag">Kotlin · Android</span>
-          <button class="copy-btn" onclick="copyCode(this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            COPY
-          </button>
-        </div>
-<pre><span class="pkg">package</span> com.example.firstapp
+    <div class="objective">
+      <strong>Objective:</strong> Perform fundamental linear algebra operations — matrix arithmetic, determinant calculation, and finding the multiplicative inverse — using the NumPy library.
+    </div>
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyCode(this)">copy</button>
+      <pre><span class="kw">import</span> <span class="lib">numpy</span> <span class="kw">as</span> <span class="lib">np</span>
 
-<span class="pkg">import</span> android.os.Bundle
-<span class="pkg">import</span> android.util.Log
-<span class="pkg">import</span> androidx.appcompat.app.AppCompatActivity
+random_1 <span class="kw2">=</span> np.random.<span class="fn">randint</span>(<span class="num">1</span>, <span class="num">10</span>, size<span class="kw2">=</span>(<span class="num">3</span>, <span class="num">3</span>))
+random_2 <span class="kw2">=</span> np.random.<span class="fn">randint</span>(<span class="num">1</span>, <span class="num">10</span>, size<span class="kw2">=</span>(<span class="num">3</span>, <span class="num">3</span>))
 
-<span class="kw">class</span> <span class="typ">MainActivity</span> : <span class="typ">AppCompatActivity</span>() {
+<span class="fn">print</span>(random_1)
+<span class="fn">print</span>(<span class="str">"\n"</span>)
+<span class="fn">print</span>(random_2)
+<span class="fn">print</span>(<span class="str">"\n"</span>)
+<span class="fn">print</span>(random_1 <span class="kw2">+</span> random_2)
+<span class="fn">print</span>(<span class="str">"\n"</span>)
+<span class="fn">print</span>(random_1 <span class="kw2">-</span> random_2)
+<span class="fn">print</span>(<span class="str">"\n"</span>)
+<span class="fn">print</span>(random_1 <span class="kw2">*</span> random_2)
+<span class="fn">print</span>(<span class="str">"\n"</span>)
+<span class="fn">print</span>(random_1 <span class="kw2">/</span> random_2)
 
-    <span class="kw">override fun</span> <span class="fn">onCreate</span>(savedInstanceState: <span class="typ">Bundle</span>?) {
-        <span class="kw">super</span>.<span class="fn">onCreate</span>(savedInstanceState)
-        <span class="fn">setContentView</span>(R.layout.activity_main)
-        Log.<span class="fn">e</span>(<span class="str">"FirstApp"</span>, <span class="str">"This is onCreate() method"</span>)
-    }
+det_a <span class="kw2">=</span> np.linalg.<span class="fn">det</span>(random_1)
+inv_b <span class="kw2">=</span> np.linalg.<span class="fn">det</span>(random_2)
+<span class="fn">print</span>(det_a)
+<span class="fn">print</span>(<span class="str">'\n'</span>)
+<span class="fn">print</span>(inv_b)
 
-    <span class="kw">override fun</span> <span class="fn">onStart</span>() {
-        <span class="kw">super</span>.<span class="fn">onStart</span>()
-        Log.<span class="fn">e</span>(<span class="str">"FirstApp"</span>, <span class="str">"This is onStart() method"</span>)
-    }
-
-    <span class="kw">override fun</span> <span class="fn">onResume</span>() {
-        <span class="kw">super</span>.<span class="fn">onResume</span>()
-        Log.<span class="fn">e</span>(<span class="str">"FirstApp"</span>, <span class="str">"This is onResume() method"</span>)
-    }
-
-    <span class="kw">override fun</span> <span class="fn">onPause</span>() {
-        <span class="kw">super</span>.<span class="fn">onPause</span>()
-        Log.<span class="fn">e</span>(<span class="str">"FirstApp"</span>, <span class="str">"This is onPause() method"</span>)
-    }
-
-    <span class="kw">override fun</span> <span class="fn">onStop</span>() {
-        <span class="kw">super</span>.<span class="fn">onStop</span>()
-        Log.<span class="fn">e</span>(<span class="str">"FirstApp"</span>, <span class="str">"This is onStop() method"</span>)
-    }
-
-    <span class="kw">override fun</span> <span class="fn">onDestroy</span>() {
-        <span class="kw">super</span>.<span class="fn">onDestroy</span>()
-        Log.<span class="fn">e</span>(<span class="str">"FirstApp"</span>, <span class="str">"This is onDestroy() method"</span>)
-    }
-
-    <span class="kw">override fun</span> <span class="fn">onRestart</span>() {
-        <span class="kw">super</span>.<span class="fn">onRestart</span>()
-        Log.<span class="fn">e</span>(<span class="str">"FirstApp"</span>, <span class="str">"This is onRestart() method"</span>)
-    }
-}</pre>
-      </div>
+<span class="kw">try</span>:
+    inv_a <span class="kw2">=</span> np.linalg.<span class="fn">inv</span>(random_1)
+    inv_b <span class="kw2">=</span> np.linalg.<span class="fn">inv</span>(random_2)
+    <span class="fn">print</span>(inv_a)
+    <span class="fn">print</span>(<span class="str">'\n'</span>)
+    <span class="fn">print</span>(inv_b)
+<span class="kw">except</span> np.linalg.<span class="fn">LinAlgError</span> <span class="kw">as</span> e:
+    <span class="fn">print</span>(e)</pre>
     </div>
   </div>
 
-  <footer>// end of practicals &nbsp;·&nbsp; MAD Lab</footer>
+  <!-- Practical 9 -->
+  <div class="card">
+    <div class="card-header">
+      <span class="pnum p9">P-09</span>
+      <h2>Conditional Filtering on NumPy Arrays</h2>
+    </div>
+    <div class="objective">
+      <strong>Objective:</strong> Perform conditional filtering on a NumPy array and calculate statistical measures (mean) on the filtered subset of data.
+    </div>
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyCode(this)">copy</button>
+      <pre><span class="kw">import</span> <span class="lib">numpy</span> <span class="kw">as</span> <span class="lib">np</span>
+
+data_num <span class="kw2">=</span> np.random.<span class="fn">randint</span>(<span class="num">1</span>, <span class="num">1000</span>, size<span class="kw2">=</span><span class="num">100</span>)
+
+filter_value <span class="kw2">=</span> (data_num <span class="kw2">&gt;</span> <span class="num">500</span>) <span class="kw2">&amp;</span> (data_num <span class="kw2">&lt;</span> <span class="num">800</span>)
+<span class="fn">print</span>(filter_value)
+
+filter_num <span class="kw2">=</span> data_num[filter_value].<span class="fn">mean</span>()
+<span class="fn">print</span>(filter_num)</pre>
+    </div>
+  </div>
+
+  <!-- Practical 10 -->
+  <div class="card">
+    <div class="card-header">
+      <span class="pnum p10">P-10</span>
+      <h2>Multi-Featured Dataset with Pandas Pivot Table</h2>
+    </div>
+    <div class="objective">
+      <strong>Objective:</strong> Create and display a multi-featured dataset using the Pandas library, focusing on structured data organization for business metrics using pivot tables.
+    </div>
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyCode(this)">copy</button>
+      <pre><span class="kw">import</span> <span class="lib">pandas</span> <span class="kw">as</span> <span class="lib">pd</span>
+
+data_fr <span class="kw2">=</span> pd.<span class="fn">DataFrame</span>({
+    <span class="str">'date'</span>:    [<span class="str">'2019-04-05'</span>, <span class="str">'2023-11-20'</span>, <span class="str">'2026-08-12'</span>],
+    <span class="str">'region'</span>:  [<span class="str">'west'</span>, <span class="str">'north'</span>, <span class="str">'south'</span>],
+    <span class="str">'product'</span>: [<span class="str">'Ak-47'</span>, <span class="str">'handgranet'</span>, <span class="str">'lonchar'</span>],
+    <span class="str">'sales'</span>:   [<span class="num">200</span>, <span class="num">444</span>, <span class="num">666</span>]
+})
+
+final_fr <span class="kw2">=</span> data_fr.<span class="fn">pivot_table</span>(
+    index<span class="kw2">=</span><span class="str">'sales'</span>,
+    columns<span class="kw2">=</span><span class="str">'region'</span>,
+    values<span class="kw2">=</span><span class="str">'product'</span>,
+    aggfunc<span class="kw2">=</span><span class="str">'min'</span>
+)
+<span class="fn">print</span>(final_fr)</pre>
+    </div>
+  </div>
 
 </div>
+
 <script>
   function copyCode(btn) {
-    const pre = btn.closest('.code-wrap').querySelector('pre');
+    const pre = btn.nextElementSibling;
     const text = pre.innerText;
 
-    // Fallback using textarea
+    function showSuccess() {
+      btn.textContent = 'copied!';
+      btn.style.color = 'var(--green)';
+      btn.style.borderColor = 'var(--green)';
+      setTimeout(() => {
+        btn.textContent = 'copy';
+        btn.style.color = '';
+        btn.style.borderColor = '';
+      }, 1800);
+    }
+
+    // Try modern clipboard API first
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(showSuccess).catch(() => fallbackCopy(text, showSuccess));
+    } else {
+      fallbackCopy(text, showSuccess);
+    }
+  }
+
+  function fallbackCopy(text, callback) {
     const ta = document.createElement('textarea');
     ta.value = text;
-    ta.style.position = 'fixed';
-    ta.style.opacity = '0';
-    ta.style.top = '0';
-    ta.style.left = '0';
+    ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none;';
     document.body.appendChild(ta);
     ta.focus();
     ta.select();
-
     try {
       document.execCommand('copy');
-      showCopied(btn);
-    } catch (e) {
-      // Try modern API as secondary
-      navigator.clipboard && navigator.clipboard.writeText(text)
-        .then(() => showCopied(btn))
-        .catch(() => alert('Copy failed — try selecting the code manually.'));
+      callback();
+    } catch(e) {
+      alert('Copy failed. Please select and copy manually.');
     }
-
     document.body.removeChild(ta);
-  }
-
-  function showCopied(btn) {
-    btn.classList.add('copied');
-    btn.innerHTML = `
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-      COPIED
-    `;
-    setTimeout(() => {
-      btn.classList.remove('copied');
-      btn.innerHTML = `
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-        COPY
-      `;
-    }, 2000);
   }
 </script>
 </body>
